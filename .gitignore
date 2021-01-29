@@ -20,7 +20,8 @@
 .env*
 docker-compose.override.yml
 next.config.js
-/scripts
+/artifacts
+/cache
 
 # debug
 npm-debug.log*
