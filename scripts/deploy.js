@@ -32,6 +32,7 @@ async function main() {
   // const [voteEvent] = await orcaProtocol.queryFilter('VoteManagerAddress');
   // const orcaVoteManager = new ethers.Contract(voteEvent.args[0], OrcaVoteManager.abi, signer);
 
+  // Write deployed contract addresses to the contract artifacts
   fs.writeFileSync(
     `${__dirname}/../artifacts/contracts/OrcaProtocol.sol/OrcaProtocol.json`,
     JSON.stringify(

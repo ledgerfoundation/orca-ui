@@ -1,6 +1,7 @@
 import { computed, observable } from 'mobx';
 import userSchema from '../schema/user';
 import { parseError } from '../utils/error-utils';
+import { abi, address } from '../artifacts/contracts/OrcaMemberToken.sol/OrcaMemberToken.json';
 
 export class UserPageStore {
   @observable authStore = null;
@@ -9,9 +10,10 @@ export class UserPageStore {
 
   @observable user = userSchema.default();
 
-  constructor(authStore, notificationsStore) {
+  constructor(authStore, notificationsStore, contractStore) {
     this.authStore = authStore;
     this.notificationsStore = notificationsStore;
+    this.contractStore = contractStore;
   }
 
   @computed
@@ -19,8 +21,9 @@ export class UserPageStore {
     return this.user?._id === this.authStore?.user?._id;
   }
 
-  loadUser = async userId => {
+  loadUser = async userAddress => {
     this.isLoading = true;
+    const userPods = this.contractStore.memberToken.balanceOfBatch(this.user, 1);
     this.isLoading = false;
   };
 

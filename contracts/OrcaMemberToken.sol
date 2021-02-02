@@ -16,6 +16,8 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 contract OrcaMemberToken is ERC1155 {
     constructor() public ERC1155("ORCA TOKENS FOOL!") {}
 
+    uint256[] public ids;
+
     function mint(
         address to,
         uint256 id,
@@ -23,5 +25,7 @@ contract OrcaMemberToken is ERC1155 {
         bytes memory data
     ) public {
         _mint(to, id, supplyTotal, data);
+        
+        ids.push(id);
     }
 }
