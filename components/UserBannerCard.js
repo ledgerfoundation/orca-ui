@@ -2,19 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Avatar,
-  Button,
-  ButtonGroup,
-  Container,
-  Grid,
-  IconButton,
-  Paper,
-  Typography,
-  CircularProgress,
-} from '@material-ui/core';
+import { Avatar, Container, Grid, IconButton, Paper, Typography } from '@material-ui/core';
 import theme from '../config/theme';
-import UserModal from './UserModal';
 
 const {
   typography: { pxToRem },
@@ -40,24 +29,15 @@ const useStyles = makeStyles({
   },
 });
 
-const UserBannerCard = ({ className, user, isLoading, saveUser, matchesUser, ...other }) => {
+const UserBannerCard = ({ className, user, ...other }) => {
   const classes = useStyles();
   const root = clsx(classes.root, className);
 
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [isImgOpen, setIsImgOpen] = React.useState(false);
-
-  const name = user.nickname || 'New User';
-
-  const bio = user?.bio || 'Add a bio!';
+  const img = '';
 
   const UserAvatar = () => (
-    <IconButton disabled={!matchesUser || isLoading}>
-      <Avatar
-        onClick={() => setIsImgOpen(true)}
-        className={classes.avatar}
-        src={user?.profileImage?.url || user.picture}
-      />
+    <IconButton disabled>
+      <Avatar className={classes.avatar} src={img} />
     </IconButton>
   );
 
@@ -77,12 +57,9 @@ const UserBannerCard = ({ className, user, isLoading, saveUser, matchesUser, ...
             </Grid>
             <Grid item container direction="column" md={8} xs={6}>
               <Typography noWrap className={classes.text} variant="h2">
-                {name}
+                {user}
               </Typography>
             </Grid>
-          </Grid>
-          <Grid item>
-            <Typography variant="body2">{bio}</Typography>
           </Grid>
         </Grid>
       </Container>
@@ -93,13 +70,11 @@ const UserBannerCard = ({ className, user, isLoading, saveUser, matchesUser, ...
 UserBannerCard.propTypes = {
   className: PropTypes.string,
   user: PropTypes.string,
-  isLoading: null,
 };
 
 UserBannerCard.defaultProps = {
   className: '',
   user: {},
-  isLoading: null,
 };
 
 export default UserBannerCard;

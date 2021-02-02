@@ -46,7 +46,7 @@ export const App = observer(({ Component, pageProps }) => {
             rel="stylesheet"
           />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-          <title>cove.social</title>
+          <title>Orca Protocol</title>
           {/* Global Site Tag (gtag.js) - Google Analytics */}
           <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`} />
           <script

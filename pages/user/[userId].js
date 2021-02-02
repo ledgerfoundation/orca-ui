@@ -7,16 +7,15 @@ import Layout from '../../components/Layout';
 import UserBannerCard from '../../components/UserBannerCard';
 import PodList from '../../components/PodList';
 import { useAppStore } from '../../store';
-import { getUserById } from '../../services/user';
 
 const useStyles = makeStyles({
   root: {},
 });
 
-const User = observer(({ user }) => {
+const User = observer(() => {
   const classes = useStyles();
 
-  const { createPod, setUser, matchesUser } = useAppStore().userPageStore;
+  const { createPod, setUser, matchesUser, user } = useAppStore().userPageStore;
   const { query } = useRouter();
   const { userId } = query;
 
@@ -55,20 +54,5 @@ const User = observer(({ user }) => {
     </Layout>
   );
 });
-
-export const getServerSideProps = async ({ query, res }) => {
-  let user;
-  try {
-    user = await getUserById(query.userId);
-  } catch {
-    res.writeHead(302, { Location: '/404' });
-    res.end();
-  }
-  return { props: { user } };
-};
-
-User.propTypes = {};
-
-User.defaultProps = {};
 
 export default User;

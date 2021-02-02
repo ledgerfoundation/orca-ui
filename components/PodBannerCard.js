@@ -13,7 +13,6 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import theme from '../config/theme';
-import ImageCrop from './ImageCrop';
 import EditPodModal from './PodEditModal';
 
 const {
@@ -48,11 +47,10 @@ const PodBannerCard = ({
   const root = clsx(classes.root, className);
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isImgOpen, setIsImgOpen] = React.useState(false);
 
   const PodAvatar = () => (
     <IconButton disabled={!matchesUser || !canInstructorView}>
-      <Avatar onClick={() => setIsImgOpen(true)} className={classes.avatar} src={pod?.image?.url} />
+      <Avatar className={classes.avatar} src={pod?.image?.url} />
     </IconButton>
   );
 
@@ -67,12 +65,12 @@ const PodBannerCard = ({
       {isLoading ? (
         <CircularProgress color="secondary" />
       ) : (
-          canInstructorView && (
-            <Button className={classes.buttons} onClick={() => setIsOpen(true)}>
-              Edit
-            </Button>
-          )
-        )}
+        canInstructorView && (
+          <Button className={classes.buttons} onClick={() => setIsOpen(true)}>
+            Edit
+          </Button>
+        )
+      )}
       {isOpen && (
         <EditPodModal onSave={editPod} pod={pod} open={isOpen} onClose={() => setIsOpen(false)} />
       )}
@@ -104,18 +102,6 @@ const PodBannerCard = ({
           </Grid>
         </Grid>
       </Container>
-      <ImageCrop
-        imageModalOpen={isImgOpen}
-        setImageModalOpen={setIsImgOpen}
-        mediaObject={pod?.image?.url}
-        subText="For best results, use an image that is at least 500px wide. When choosing an image, think about what the image says about you. Select an image that is professional but friendly"
-        onSave={mediaObject => {
-          editPod(pod, mediaObject);
-        }}
-        cropShape="round"
-        cropType="POD"
-        aspect={3 / 3}
-      />
     </Paper>
   );
 };

@@ -33,8 +33,7 @@ const useStyles = makeStyles({
 
 const Nav = observer(() => {
   const classes = useStyles();
-  const image = '/Overlly-logo-mark-black.svg';
-  // const browseText = useMediaQuery('(min-width:600px)') ? 'Browse Instructors' : 'Browse';
+  const image = '';
 
   const { user, isLoading, login, logout } = useAppStore().authStore;
 
