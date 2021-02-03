@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 const User = observer(() => {
   const classes = useStyles();
 
-  const { createPod, setUser, matchesUser, user } = useAppStore().userPageStore;
+  const { createPod, setUser, isAuthUser, user } = useAppStore().userPageStore;
   const { query } = useRouter();
   const { userId } = query;
 
@@ -32,13 +32,13 @@ const User = observer(() => {
           <Grid container alignItems="flex-start" direction="row" spacing={2}>
             <Grid container item direction="column" md={8} spacing={2}>
               <Grid item>
-                <UserBannerCard matchesUser={matchesUser} user={user} />
+                <UserBannerCard isAuthUser={isAuthUser} user={user} />
               </Grid>
               {user?.isHost && (
                 <Grid item>
                   <PodList
                     title="Hosted Pods"
-                    matchesUser={matchesUser}
+                    isAuthUser={isAuthUser}
                     pods={user.hostPods}
                     createPod={createPod}
                   />

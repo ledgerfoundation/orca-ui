@@ -22,13 +22,13 @@ export class PodPageStore {
   }
 
   @computed
-  get canInstructorView() {
+  get isHost() {
     return this._pod?.hostId === this.authStore?.user?._id;
   }
 
   @computed
   get isBooked() {
-    return this._pod?.memberIds?.includes(this.authStore?.user?._id);
+    return this._pod?.memberIds?.includes(this.authStore.user);
   }
 
   @computed
@@ -43,9 +43,7 @@ export class PodPageStore {
       const pod = this._pod;
       const updatedPod = {
         ...pod,
-        booked: pod.memberIds
-          ? !!pod.memberIds.find(participant => (participant?._id || participant) === user._id)
-          : false,
+        booked: pod.memberIds ? !!pod.memberIds.find(participant => participant === user) : false,
       };
       return updatedPod;
     }
@@ -63,18 +61,15 @@ export class PodPageStore {
 
   loadPod = async podId => {
     this._isLoading = true;
-    this._pod = await API.get(`/api/pods/${podId}`);
     this._isLoading = false;
   };
 
   bookPod = async pod => {
     this._isLoading = true;
     try {
-      this._pod = await API.post('/api/pods/book-pod', pod);
       this.authStore.user.pods
         ? this.authStore.user.pods.push(pod)
         : (this.authStore.user.pods = [pod]);
-      this._pod = await API.get(`/api/pods/${pod._id}`);
       this.notificationsStore.showSuccessMessage(`${pod.title} was successfully booked`);
     } catch (error) {
       const err = parseError(error, 'POD_ERROR');
@@ -86,7 +81,6 @@ export class PodPageStore {
   editPod = async (pod, podImg) => {
     this._isLoading = true;
     try {
-      this._pod = await editPod(pod, podImg);
       this.notificationsStore.showSuccessMessage(`${pod.title} was successfully edited`);
     } catch (error) {
       const err = parseError(error, 'POD_ERROR');
@@ -94,17 +88,6 @@ export class PodPageStore {
     }
     this._isLoading = false;
   };
-
-  // createPaymentIntent = async podId => {
-  //   this._isLoading = true;
-  //   try {
-  //     this._paymentIntentSecret = await API.post('/api/payment', podId);
-  //   } catch (error) {
-  //     const err = parseError(error, 'STRIPE_ERROR');
-  //     this.notificationsStore.showErrorMessage(err.message);
-  //   }
-  //   this._isLoading = false;
-  // };
 }
 
 export default PodPageStore;

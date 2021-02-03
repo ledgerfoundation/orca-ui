@@ -54,7 +54,7 @@ const PodDetailContent = ({ pod, className, user }) => {
   const classes = useStyles();
   const root = clsx(classes.root, className);
   const { host } = pod;
-  const { bookPod, canInstructorView, isPodFull } = useAppStore().podPage;
+  const { bookPod, isHost, isPodFull } = useAppStore().podPage;
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [isPaymentCompleteModalOpen, setIsPaymentCompleteModalOpen] = React.useState(false);
@@ -128,7 +128,7 @@ const PodDetailContent = ({ pod, className, user }) => {
               </Typography>
             </Grid>
             <>
-              {!canInstructorView &&
+              {!isHost &&
                 (!pod?.booked ? (
                   <Button className={classes.bookNowButton} onClick={handleBook} variant="outlined">
                     <Typography variant="h4" className={classes.countDownText}>

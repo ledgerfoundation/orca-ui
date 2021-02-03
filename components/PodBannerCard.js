@@ -34,22 +34,14 @@ const useStyles = makeStyles({
   },
 });
 
-const PodBannerCard = ({
-  pod,
-  editPod,
-  className,
-  isLoading,
-  canInstructorView,
-  matchesUser,
-  ...other
-}) => {
+const PodBannerCard = ({ pod, editPod, className, isLoading, isHost, isAuthUser, ...other }) => {
   const classes = useStyles();
   const root = clsx(classes.root, className);
 
   const [isOpen, setIsOpen] = React.useState(false);
 
   const PodAvatar = () => (
-    <IconButton disabled={!matchesUser || !canInstructorView}>
+    <IconButton disabled={!isAuthUser || !isHost}>
       <Avatar className={classes.avatar} src={pod?.image?.url} />
     </IconButton>
   );
@@ -65,7 +57,7 @@ const PodBannerCard = ({
       {isLoading ? (
         <CircularProgress color="secondary" />
       ) : (
-        canInstructorView && (
+        isHost && (
           <Button className={classes.buttons} onClick={() => setIsOpen(true)}>
             Edit
           </Button>
@@ -109,8 +101,8 @@ const PodBannerCard = ({
 PodBannerCard.propTypes = {
   className: PropTypes.string,
   editPod: PropTypes.func,
-  canInstructorView: PropTypes.bool,
-  matchesUser: PropTypes.bool,
+  isHost: PropTypes.bool,
+  isAuthUser: PropTypes.bool,
   pod: PropTypes.shape({
     host: PropTypes.shape({
       nickname: PropTypes.string,
@@ -123,8 +115,8 @@ PodBannerCard.defaultProps = {
   className: '',
   editPod: null,
   isLoading: null,
-  matchesUser: null,
-  canInstructorView: null,
+  isAuthUser: null,
+  isHost: null,
   pod: {
     host: {
       nickname: '',

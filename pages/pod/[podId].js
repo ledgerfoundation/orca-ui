@@ -9,9 +9,6 @@ import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import Layout from '../../components/Layout';
 import { useAppStore } from '../../store/app-store.hook';
-import { getPod } from '../../services/pod';
-import { auth0 } from '../../utils/auth0';
-import { getUser } from '../../services/user';
 import PodPaymentCard from '../../components/PodPaymentCard';
 import GatheringDetailCard from '../../components/GatheringDetailCard';
 import UserBannerCard from '../../components/UserBannerCard';
@@ -37,22 +34,14 @@ const useStyles = makeStyles({
   },
 });
 
-const Pod = observer(({ className, user }) => {
+const Pod = observer(({ className }) => {
   const classes = useStyles();
   const root = clsx(classes.root, className);
   const { query } = useRouter();
   const { podId } = query;
 
-  const {
-    pod,
-    loadPod,
-    setPod,
-    editPod,
-    canInstructorView,
-    isLoading,
-    isBooked,
-  } = useAppStore().podPage;
-  const { matchesUser } = useAppStore().userPageStore;
+  const { pod, loadPod, setPod, editPod, isHost, isLoading, isBooked } = useAppStore().podPage;
+  const { isAuthUser, user } = useAppStore().userPageStore;
 
   React.useEffect(() => {
     if (podId) loadPod(podId);
@@ -73,8 +62,8 @@ const Pod = observer(({ className, user }) => {
                   isLoading={isLoading}
                   editPod={editPod}
                   pod={pod}
-                  canInstructorView={canInstructorView}
-                  matchesUser={matchesUser}
+                  isHost={isHost}
+                  isAuthUser={isAuthUser}
                 />
               </Grid>
               <Grid
@@ -127,32 +116,6 @@ const Pod = observer(({ className, user }) => {
     </Layout>
   );
 });
-
-export const getServerSideProps = async ({ query, req, res }) => {
-  let auth;
-  let user;
-  let pod;
-  try {
-    auth = await auth0.getSession(req);
-  } catch (error) {
-    console.error(error);
-  }
-
-  if (auth) {
-    const { user: authUser } = auth;
-    // checks if the user exists, if not will register user in db
-    try {
-      user = await getUser(authUser);
-      pod = await getPod(query.podId);
-    } catch {
-      res.writeHead(302, { Location: '/404' });
-      res.end();
-    }
-
-    return { props: { user, pod } };
-  }
-  return { props: {} };
-};
 
 Pod.propTypes = {
   pod: PropTypes.shape({}),

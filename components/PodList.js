@@ -33,7 +33,7 @@ const PodList = ({
   pods = [],
   createPod,
   isLoading,
-  matchesUser,
+  isAuthUser,
   ...other
 }) => {
   const classes = useStyles();
@@ -41,7 +41,7 @@ const PodList = ({
 
   const [isOpen, setIsOpen] = useState(false);
   const minRenderCount = [1, 2];
-  const renderPods = minRenderCount.map(count => (pods.length >= count ? pods[count - 1] : {}));
+  const renderPods = minRenderCount.map(count => (pods?.length >= count ? pods[count - 1] : {}));
 
   return (
     <Paper className={root} elevation={2} {...other}>
@@ -52,7 +52,7 @@ const PodList = ({
           </Grid>
           <Grid container direction="column" spacing={2}>
             {createPod &&
-              matchesUser &&
+              isAuthUser &&
               (isLoading ? (
                 <CircularProgress color="secondary" />
               ) : (
@@ -87,7 +87,7 @@ PodList.propTypes = {
   ),
   createPod: PropTypes.func,
   isLoading: PropTypes.bool,
-  matchesUser: PropTypes.bool,
+  isAuthUser: PropTypes.bool,
 };
 
 PodList.defaultProps = {
@@ -96,6 +96,6 @@ PodList.defaultProps = {
   pods: [],
   createPod: null,
   isLoading: null,
-  matchesUser: null,
+  isAuthUser: null,
 };
 export default PodList;

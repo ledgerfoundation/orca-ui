@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Typography, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Instagram } from '@material-ui/icons';
+import { Twitter } from '@material-ui/icons';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import theme from '../config/theme';
 
@@ -43,16 +43,16 @@ const Footer = () => {
       <Grid container justify="center" direction="row" alignItems="center" className={classes.root}>
         <Grid item>
           <Grid container justify="flex-end">
-            <img className={classes.image} alt="logo" src="/Overlly-logo-mark-white.svg" />
+            <span role="img">🐋</span>
           </Grid>
         </Grid>
       </Grid>
-      <Link href="https://www.instagram.com/cove.social/">
+      <Link href="https://twitter.com/orcaprotocol">
         <Grid container justify="center" direction="row" alignItems="stretch">
           <Typography className={classes.text} variant="h6">
             FOLLOW US
           </Typography>
-          <Instagram className={classes.icon} />
+          <Twitter className={classes.icon} />
         </Grid>
       </Link>
       <Link href="mailto:support@overlly.com">

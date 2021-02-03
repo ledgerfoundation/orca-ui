@@ -55,7 +55,7 @@ const Nav = observer(() => {
     <AppBar className={classes.nav} elevation={0}>
       <Toolbar>
         <Button onClick={handleLogoClick}>
-          <img className={classes.image} alt="logo" src={image} />
+          <span role="img">🐋</span>
         </Button>
 
         <Grid container justify="flex-end">
