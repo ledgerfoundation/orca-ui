@@ -2,10 +2,12 @@ pragma solidity 0.7.4;
 
 /* solhint-disable indent */
 
-import "./OrcaPodManager.sol";
-import "./OrcaVoteManager.sol";
-import "./OrcaMemberToken.sol";
+import 'hardhat/console.sol';
+import './OrcaPodManager.sol';
+import './OrcaVoteManager.sol';
+import './OrcaRulebook.sol';
 
+import 'hardhat/console.sol';
 
 // TODO: consider  order of contract  deployment. May not want to deploy all together
 // this will impact the modifiers that are important for securiy
@@ -17,58 +19,42 @@ import "./OrcaMemberToken.sol";
 // only allow for one token per user
 
 contract OrcaProtocol {
-event PodManagerAddress(address contractAddress);
-event VoteManagerAddress(address contractAddress);
+    event RulebookAddress(address contractAddress);
+    event PodManagerAddress(address contractAddress);
+    event VoteManagerAddress(address contractAddress);
     event CreatePod(uint256 podId);
 
-    OrcaPodManager public orcaPodManager;
-    OrcaVoteManager public orcaVoteManager;
-    OrcaMemberToken public orcaMemberToken;
+    OrcaPodManager orcaPodManager;
+    OrcaVoteManager orcaVoteManager;
+    OrcaRulebook orcaRulebook;
 
-    constructor(address _orcaMemberTokenAddress)
-        public
-    // address OrcaPodManagerAddress,
+    constructor() public // address OrcaPodManagerAddress,
     // address OrcaVotingManagerAddress,
     {
-        orcaMemberToken = OrcaMemberToken(_orcaMemberTokenAddress);
+        orcaRulebook = new OrcaRulebook();
+        emit RulebookAddress(address(orcaRulebook));
 
-        orcaPodManager = new OrcaPodManager(orcaMemberToken);
+        orcaPodManager = new OrcaPodManager(orcaRulebook);
         emit PodManagerAddress(address(orcaPodManager));
 
-        orcaVoteManager = new OrcaVoteManager(orcaPodManager);
+        orcaVoteManager = new OrcaVoteManager(orcaPodManager, orcaRulebook);
         emit VoteManagerAddress(address(orcaVoteManager));
 
         orcaPodManager.setVoteManager(address(orcaVoteManager));
     }
 
+    /*
+     * This function creates a pod, assigns one token to the sender of the message,
+     * and sets the initial rules for that pod.
+     */
     function createPod(
         uint256 _podId,
         uint256 _totalSupply,
-        address _contractAddress,
-        bytes4 _functionSignature,
-        bytes32[5] calldata _functionParams,
-        uint256 _comparisonLogic,
-        uint256 _comparisonValue,
         uint256 _votingPeriod,
         uint256 _minQuorum
     ) public {
         // add a require to confirm minting was successful otherwise revert
-        orcaMemberToken.mint(
-            address(orcaPodManager),
-            _podId,
-            _totalSupply,
-            bytes("bytes test")
-        );
-
-        // create rule
-        orcaPodManager.createPodRule(
-          _podId,
-          _contractAddress,
-          _functionSignature,
-          _functionParams,
-          _comparisonLogic,
-          _comparisonValue
-        );
+        orcaPodManager.createPod(msg.sender, _podId, _totalSupply);
 
         orcaVoteManager.createVotingStrategy(_podId, _votingPeriod, _minQuorum);
         emit CreatePod(_podId);
