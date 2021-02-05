@@ -20,7 +20,7 @@ export class AppStore {
     this.notificationsStore = new NotificationsStore();
     this.authStore = new AuthStore(this.notificationsStore);
     this.contractStore = new ContractStore(this.authStore, this.notificationsStore);
-    this.podPage = new PodPageStore(this.authStore, this.notificationsStore);
+    this.podPage = new PodPageStore(this.authStore, this.notificationsStore, this.contractStore);
     this.userPageStore = new UserPageStore(
       this.authStore,
       this.notificationsStore,

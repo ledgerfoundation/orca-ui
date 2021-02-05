@@ -11,9 +11,10 @@ export class PodPageStore {
 
   @observable _paymentIntentSecret = null;
 
-  constructor(authStore, notificationsStore) {
+  constructor(authStore, notificationsStore, contractStore) {
     this.authStore = authStore;
     this.notificationsStore = notificationsStore;
+    this.contractStore = contractStore;
   }
 
   @computed

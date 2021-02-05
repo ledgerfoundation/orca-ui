@@ -1,19 +1,16 @@
 import { computed, observable } from 'mobx';
-import userSchema from '../schema/user';
 import { parseError } from '../utils/error-utils';
-// import { abi, address } from '../artifacts/contracts/OrcaMemberToken.sol/OrcaMemberToken.json';
-// import CreatePod from '../artifacts/contracts/OrcaProtocol.sol/OrcaProtocol.json';
 
 export class UserPageStore {
   @observable authStore = null;
 
   @observable isLoading = false;
 
-  @observable user = userSchema.default();
+  @observable user = null;
 
-  @observable userMemberPods = null;
+  @observable userMemberPods = [];
 
-  @observable userHostPods = null;
+  @observable userHostPods = [];
 
   constructor(authStore, notificationsStore, contractStore) {
     this.authStore = authStore;
@@ -33,7 +30,12 @@ export class UserPageStore {
   loadUser = async userAddress => {
     this.isLoading = true;
     try {
-      this.userMemberPods = this.contractStore.memberToken.balanceOf(userAddress, 2);
+      // console.log(this.contractStore.createPod, 'create pod contract');
+      // console.log(this.contractStore.podManager, 'create rule');
+      // console.log(this.contractStore.voteManager, 'vote on rule');
+      // console.log(this.contractStore.memberToken, 'MEMBER');
+      // this.userMemberPods = this.contractStore.memberToken.balanceOf(userAddress, 2) || [];
+      // console.log(this.userMemberPods);
     } catch (e) {
       console.log(e);
     }
@@ -43,17 +45,7 @@ export class UserPageStore {
   createPod = async pod => {
     this.isLoading = true;
     try {
-      // const newPod = CreatePod(
-      //   podId,
-      //   totalSupply,
-      //   orcaToken.address,
-      //   functionSignature,
-      //   params,
-      //   comparisonLogic,
-      //   comparisonValue,
-      //   votingPeriod,
-      //   minQuorum,
-      // );
+      // const newPod = await this.contractStore.createPod.createPod(pod);
       this.notificationsStore.showSuccessMessage(`${pod.title} was successfully created`);
     } catch (error) {
       const err = parseError(error, 'POD_ERROR');
