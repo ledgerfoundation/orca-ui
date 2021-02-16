@@ -3,9 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Grid, Container, Paper, Button } from '@material-ui/core';
+import { Typography, Grid, Container, Paper } from '@material-ui/core';
 import theme from '../config/theme';
-import PaymentCheckoutModal from './PaymentCheckoutModal';
 
 const {
   typography: { pxToRem },
@@ -32,11 +31,9 @@ const useStyles = makeStyles({
   },
 });
 
-const PodPaymentCard = ({ className, pod, isBooked }) => {
+const PodPaymentCard = ({ className, pod }) => {
   const classes = useStyles();
   const root = clsx(classes.root, className);
-
-  const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <Paper elevation={2} className={root}>
@@ -61,20 +58,9 @@ const PodPaymentCard = ({ className, pod, isBooked }) => {
             <Grid item>
               <Typography variant="body2">monthly dues</Typography>
             </Grid>
-            {!isBooked ? <Button onClick={() => setIsOpen(true)}>Book</Button> : "You're Booked"}
           </Grid>
         )}
       </Container>
-      {isOpen && (
-        <PaymentCheckoutModal
-          pod={pod}
-          open={isOpen}
-          disabled={pod?.booked}
-          onClose={() => {
-            setIsOpen(false);
-          }}
-        />
-      )}
     </Paper>
   );
 };
@@ -84,7 +70,6 @@ PodPaymentCard.propTypes = {
   pod: PropTypes.shape({
     time: PropTypes.string,
   }),
-  isBooked: PropTypes.bool,
 };
 
 PodPaymentCard.defaultProps = {
@@ -92,7 +77,6 @@ PodPaymentCard.defaultProps = {
   pod: {
     time: '',
   },
-  isBooked: false,
 };
 
 export default PodPaymentCard;
