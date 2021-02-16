@@ -55,7 +55,7 @@ const Footer = () => {
           <Twitter className={classes.icon} />
         </Grid>
       </Link>
-      <Link href="mailto:support@overlly.com">
+      <Link href="mailto:orcaprotocol@gmail.com">
         <Grid container justify="center" direction="row" alignItems="stretch">
           <Typography className={classes.text} variant="h6">
             CONTACT US

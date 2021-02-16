@@ -72,7 +72,7 @@ const useStyles = makeStyles({
   },
 });
 
-const OverllyConnector = withStyles({
+const OrcaConnector = withStyles({
   alternativeLabel: {
     top: 22,
   },
@@ -152,7 +152,7 @@ export const EditStepper = ({
         nonLinear
         orientation={isDesktop ? 'horizontal' : 'vertical'}
         activeStep={activeStep}
-        connector={<OverllyConnector />}
+        connector={<OrcaConnector />}
       >
         {steps.map((label, index) => (
           <Step key={label}>
